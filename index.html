@@ -123,8 +123,9 @@
                             <input x-model="formNovel.title" placeholder="Novel Name" class="w-full rounded-xl bg-black/20 border border-white/10 px-4 py-2.5 text-sm outline-none" />
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-zinc-400 mb-1">Novel Cover Image URL</label>
-                            <input x-model="formNovel.cover" placeholder="https://example.com/image.jpg" class="w-full rounded-xl bg-black/20 border border-white/10 px-4 py-2.5 text-sm outline-none" />
+                            <label class="block text-xs font-bold text-amber-400 mb-1">🖼️ Choose Novel Cover Image File</label>
+                            <input type="file" accept="image/*" @change="processImageUpload($event)" class="block w-full text-xs text-zinc-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500" />
+                            <div x-show="formNovel.coverName" class="text-xs text-emerald-400 mt-1" x-text="'Selected: ' + formNovel.coverName"></div>
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-zinc-400 mb-1">Genre</label>
@@ -228,7 +229,7 @@
                 ],
 
                 activeNovel: null,
-                formNovel: { title: '', cover: '', genre: 'Romance', description: '' },
+                formNovel: { title: '', cover: '', coverName: '', genre: 'Romance', description: '' },
                 formChapter: { novelId: '', title: '', text: '', audioUrl: '', audioName: '' },
 
                 init() {
@@ -243,6 +244,19 @@
 
                 selectNovel(novel) {
                     this.activeNovel = novel;
+                },
+
+                processImageUpload(event) {
+                    const file = event.target.files[0];
+                    if (!file) return;
+                    this.formNovel.coverName = file.name;
+
+                    // Processing file conversion via standard web asynchronous streams
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        this.formNovel.cover = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
                 },
 
                 processAudioUpload(event) {
@@ -284,22 +298,21 @@
                 submitNovel() {
                     if(!this.formNovel.title || !this.formNovel.description) return alert("Fields fill karein!");
                     
-                    // Fallback to a default clean book image if input URL is empty
                     const defaultCover = "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&w=300&q=80";
                     
                     const newNovel = {
                         id: "n-" + Date.now(),
                         title: this.formNovel.title,
                         genre: this.formNovel.genre,
-                        cover: this.formNovel.cover.trim() !== '' ? this.formNovel.cover : defaultCover,
+                        cover: this.formNovel.cover && this.formNovel.cover.trim() !== '' ? this.formNovel.cover : defaultCover,
                         description: this.formNovel.description,
                         chapters: 0
                     };
                     this.novels.push(newNovel);
                     this.saveDataToStorage();
                     this.activeNovel = newNovel;
-                    this.formNovel = { title: '', cover: '', genre: 'Romance', description: '' };
-                    alert("Novel Create ho gayi!");
+                    this.formNovel = { title: '', cover: '', coverName: '', genre: 'Romance', description: '' };
+                    alert("Novel Cover Image ke saath successfully Create ho gayi!");
                     this.view = 'home';
                 },
 
