@@ -52,10 +52,6 @@
         <main class="space-y-6">
             
             <div x-show="view === 'home'" class="space-y-8">
-                <div class="rounded-[32px] border border-white/10 bg-gradient-to-br from-indigo-500/10 to-transparent p-6">
-                    <h1 class="text-2xl font-black md:text-4xl">HTTPS Secure Audio Engine Deployed</h1>
-                    <p class="text-sm text-white/60 mt-2">GitHub Pages HTTPS security rules ke mutabik audio players ko fix kar diya gaya hai. Admin dashboard se .mp3 file upload karke check karein.</p>
-                </div>
 
                 <div class="space-y-3">
                     <div class="font-bold text-zinc-100">📚 Available Novels</div>
@@ -95,7 +91,7 @@
 
             <div x-show="view === 'library'" class="space-y-4">
                 <div class="rounded-[32px] border border-white/10 bg-white/5 p-5">
-                    <h2 class="text-xl font-black">Library Stack</h2>
+                    <h2 class="text-xl font-black">Library Stock</h2>
                 </div>
                 <div class="grid gap-4 md:grid-cols-2">
                     <template x-for="n in novels">
@@ -219,7 +215,6 @@
                 playerTitle: "No Track Loaded",
                 playerSource: "System Idle",
 
-                // Core Storage Matrix version updated to v5 to clear old cached structures automatically
                 novels: JSON.parse(localStorage.getItem('gugu_novels_v5')) || [
                     { id: "n1", title: "Midnight Echoes", genre: "Thriller", cover: "https://images.unsplash.com/photo-1516972810927-80185027ca84?auto=format&fit=crop&w=300&q=80", description: "A city hears whispers at night.", chapters: 1 }
                 ],
@@ -233,7 +228,6 @@
                 formChapter: { novelId: '', title: '', text: '', audioUrl: '', audioName: '' },
 
                 init() {
-                    // Check if setup needs initialization
                     if (!localStorage.getItem('gugu_novels_v5')) {
                         this.saveDataToStorage();
                     }
@@ -251,8 +245,6 @@
                     const file = event.target.files[0];
                     if(!file) return;
                     this.formChapter.audioName = file.name;
-                    
-                    // Native temporary blob link assignment optimized for secure frameworks
                     this.formChapter.audioUrl = URL.createObjectURL(file);
                 },
 
@@ -262,7 +254,6 @@
                         return;
                     }
                     
-                    // Stopping old context safely before reloading fresh dynamic audio nodes
                     this.audioEngine.pause();
                     this.audioEngine.src = chapter.url;
                     this.playerTitle = chapter.title;
@@ -272,7 +263,7 @@
                         .then(() => { this.isPlaying = true; })
                         .catch(e => {
                             console.error(e);
-                            alert("Audio loading mixed-content error. Kripya naya audio track upload karke check karein.");
+                            alert("Audio loading error. Kripya naya audio track upload karke check karein.");
                         });
                 },
 
@@ -359,3 +350,4 @@
     </script>
 </body>
 </html>
+
