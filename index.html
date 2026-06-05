@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GuGu FM — Premium Audio Engine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body x-data="guguApp()" class="bg-[#06070b] text-white font-sans antialiased selection:bg-indigo-500/30">
+
+    <header class="fixed inset-x-0 top-0 z-40 border-b border-white/10 bg-[#06070b]/90 backdrop-blur-xl">
+        <div class="mx-auto flex max-w-[1600px] items-center gap-3 px-4 py-3 lg:px-6">
+            <button @click="mobileNavOpen = !mobileNavOpen" class="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/5 lg:hidden">
+                <span x-text="mobileNavOpen ? '✕' : '☰'"></span>
+            </button>
+            <div class="flex items-center gap-3">
+                <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 via-fuchsia-500 to-emerald-400 text-sm font-black shadow-lg shadow-fuchsia-500/20">GF</div>
+                <div>
+                    <div class="text-lg font-semibold leading-none">GuGu FM</div>
+                    <div class="text-xs text-white/55">Audio Player Engine</div>
+                </div>
+            </div>
+            <div class="hidden flex-1 items-center gap-3 lg:flex pl-4">
+                <button @click="view = 'home'" :class="view === 'home' ? 'bg-white text-black' : 'bg-white/5 text-white/80'" class="rounded-2xl px-4 py-2 text-sm transition font-medium">Home</button>
+                <button @click="view = 'library'" :class="view === 'library' ? 'bg-white text-black' : 'bg-white/5 text-white/80'" class="rounded-2xl px-4 py-2 text-sm transition font-medium">Library</button>
+                <button @click="view = 'admin'" :class="view === 'admin' ? 'bg-white text-black' : 'bg-white/5 text-white/80'" class="rounded-2xl px-4 py-2 text-sm transition font-medium">Admin</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="mx-auto grid max-w-[1600px] grid-cols-1 gap-4 px-4 pb-28 pt-24 lg:grid-cols-[260px_1fr] lg:px-6">
+        
+        <aside class="hidden lg:block">
+            <div class="sticky top-24 space-y-3 rounded-[28px] border border-white/10 bg-white/5 p-4">
+                <button @click="view = 'home'" :class="view === 'home' ? 'bg-white text-black' : 'bg-white/5 text-white/80'" class="flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left text-sm transition">🏠 Home</button>
+                <button @click="view = 'library'" :class="view === 'library' ? 'bg-white text-black' : 'bg-white/5 text-white/80'" class="flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left text-sm transition">📚 Library</button>
+                <button @click="view = 'admin'" :class="view === 'admin' ? 'bg-white text-black' : 'bg-white/5 text-white/80'" class="flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left text-sm transition">⚙️ Admin Dashboard</button>
+            </div>
+        </aside>
+
+        <main class="space-y-6">
+            
+            <div x-show="view === 'home'" class="space-y-8">
+                <div class="rounded-[32px] border border-white/10 bg-gradient-to-br from-white/10 to-transparent p-6">
+                    <h1 class="text-2xl font-black md:text-4xl">Audio Upload & Play Engine Fixed</h1>
+                    <p class="text-sm text-white/60 mt-2">Admin Dashboard se apni audio file upload karein aur bina refresh kiye niche diye gaye chapters se play karein.</p>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="font-bold text-zinc-100">📚 Available Novels</div>
+                    <div class="flex gap-4 overflow-x-auto pb-2 no-scrollbar">
+                        <template x-for="novel in novels">
+                            <div @click="selectNovel(novel)" :class="activeNovel?.id === novel.id ? 'border-indigo-500 bg-indigo-500/10' : 'border-white/10 bg-white/5'" class="min-w-[200px] max-w-[200px] rounded-[24px] border p-3 cursor-pointer transition">
+                                <img :src="novel.cover" class="h-40 w-full object-cover rounded-xl" />
+                                <h4 class="font-bold text-sm mt-2 truncate" x-text="novel.title"></h4>
+                                <p class="text-[11px] text-white/50" x-text="novel.genre"></p>
+                            </div>
+                        </template>
+                    </div>
+                </div>
