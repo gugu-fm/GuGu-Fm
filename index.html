@@ -123,6 +123,10 @@
                             <input x-model="formNovel.title" placeholder="Novel Name" class="w-full rounded-xl bg-black/20 border border-white/10 px-4 py-2.5 text-sm outline-none" />
                         </div>
                         <div>
+                            <label class="block text-xs font-bold text-zinc-400 mb-1">Novel Cover Image URL</label>
+                            <input x-model="formNovel.cover" placeholder="https://example.com/image.jpg" class="w-full rounded-xl bg-black/20 border border-white/10 px-4 py-2.5 text-sm outline-none" />
+                        </div>
+                        <div>
                             <label class="block text-xs font-bold text-zinc-400 mb-1">Genre</label>
                             <select x-model="formNovel.genre" class="w-full rounded-xl bg-zinc-900 border border-white/10 px-4 py-2.5 text-sm outline-none">
                                 <option value="Romance">Romance</option><option value="Thriller">Thriller</option><option value="Fantasy">Fantasy</option>
@@ -224,7 +228,7 @@
                 ],
 
                 activeNovel: null,
-                formNovel: { title: '', genre: 'Romance', description: '' },
+                formNovel: { title: '', cover: '', genre: 'Romance', description: '' },
                 formChapter: { novelId: '', title: '', text: '', audioUrl: '', audioName: '' },
 
                 init() {
@@ -279,18 +283,22 @@
 
                 submitNovel() {
                     if(!this.formNovel.title || !this.formNovel.description) return alert("Fields fill karein!");
+                    
+                    // Fallback to a default clean book image if input URL is empty
+                    const defaultCover = "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&w=300&q=80";
+                    
                     const newNovel = {
                         id: "n-" + Date.now(),
                         title: this.formNovel.title,
                         genre: this.formNovel.genre,
-                        cover: "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&w=300&q=80",
+                        cover: this.formNovel.cover.trim() !== '' ? this.formNovel.cover : defaultCover,
                         description: this.formNovel.description,
                         chapters: 0
                     };
                     this.novels.push(newNovel);
                     this.saveDataToStorage();
                     this.activeNovel = newNovel;
-                    this.formNovel = { title: '', genre: 'Romance', description: '' };
+                    this.formNovel = { title: '', cover: '', genre: 'Romance', description: '' };
                     alert("Novel Create ho gayi!");
                     this.view = 'home';
                 },
@@ -350,4 +358,3 @@
     </script>
 </body>
 </html>
-
