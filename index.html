@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="hi">
-<head>
+<head> 
     <meta name="google-site-verification" content="LpNg8lLi-L5k1GnSc_jsV1l-ASR5fLolmHpyIleHr-M" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GuGu Novels — Write & Read Premium Stories</title>
+    <title>GuGu Novels — Cloud Powered Premium Reader</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
@@ -23,7 +23,7 @@
                 <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 via-fuchsia-500 to-emerald-400 text-sm font-black shadow-lg shadow-fuchsia-500/20">GN</div>
                 <div>
                     <div class="text-lg font-semibold leading-none">GuGu Novels</div>
-                    <div class="text-xs text-white/55">Premium Reader Platform</div>
+                    <div class="text-xs text-white/55">Cloud Sync Enabled</div>
                 </div>
             </div>
             <div class="hidden flex-1 items-center gap-3 lg:flex pl-4">
@@ -86,9 +86,6 @@
                                     <span class="text-xs text-indigo-400 font-bold">Read Story →</span>
                                 </div>
                             </template>
-                            <template x-if="chapters.filter(c => c.novelId === activeNovel?.id).length === 0">
-                                <div class="text-sm text-white/40 p-4 text-center border border-dashed border-white/10 rounded-xl">Is novel mein abhi koi chapter nahi likha gaya hai. Panel se naya chapter jodein.</div>
-                            </template>
                         </div>
                     </div>
                 </div>
@@ -102,11 +99,7 @@
                         <button @click="activeChapter = null" class="bg-white/5 hover:bg-white/10 text-zinc-300 text-xs px-3 py-1.5 rounded-xl font-bold transition">✕ Close Reader</button>
                     </div>
                     <div class="text-zinc-200 text-base leading-relaxed whitespace-pre-line font-serif max-w-3xl mx-auto py-4 bg-black/20 p-5 rounded-2xl min-h-[200px]" x-text="activeChapter?.text"></div>
-                    <div class="flex justify-center pt-2">
-                        <button @click="activeChapter = null; window.scrollTo({top: 0, behavior: 'smooth'})" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition">Finished Reading</button>
-                    </div>
                 </div>
-
             </div>
 
             <div x-show="view === 'library'" class="space-y-4">
@@ -120,7 +113,6 @@
                             <div class="truncate flex-1">
                                 <h3 class="font-bold text-sm text-zinc-100 truncate" x-text="n.title"></h3>
                                 <p class="text-[11px] text-white/50" x-text="n.genre"></p>
-                                <p class="text-[10px] text-indigo-400 mt-1 font-bold" x-text="chapters.filter(c => c.novelId === n.id).length + ' Chapters'"></p>
                             </div>
                         </div>
                     </template>
@@ -130,14 +122,16 @@
             <div x-show="view === 'admin'" class="space-y-6">
                 <div class="rounded-[32px] border border-white/10 bg-white/5 p-5">
                     <h2 class="text-xl font-black">Author Dashboard Engine</h2>
-                    <div class="flex gap-2 mt-4 p-1 bg-black/40 rounded-xl max-w-max">
-                        <button @click="adminTab = 'novels'" :class="adminTab === 'novels' ? 'bg-white text-black' : 'text-white/70'" class="rounded-lg px-3 py-1.5 text-xs font-bold transition">Write New Novel</button>
-                        <button @click="adminTab = 'chapters'" :class="adminTab === 'chapters' ? 'bg-white text-black' : 'text-white/70'" class="rounded-lg px-3 py-1.5 text-xs font-bold transition">Write Chapter Script</button>
+                    <div class="flex flex-wrap gap-2 mt-4 p-1 bg-black/40 rounded-xl max-w-max">
+                        <button @click="adminTab = 'novels'" :class="adminTab === 'novels' ? 'bg-white text-black' : 'text-white/70'" class="rounded-lg px-3 py-1.5 text-xs font-bold transition">New Novel</button>
+                        <button @click="adminTab = 'chapters'" :class="adminTab === 'chapters' ? 'bg-white text-black' : 'text-white/70'" class="rounded-lg px-3 py-1.5 text-xs font-bold transition">New Chapter</button>
                         <button @click="adminTab = 'content'" :class="adminTab === 'content' ? 'bg-white text-black' : 'text-white/70'" class="rounded-lg px-3 py-1.5 text-xs font-bold transition">Manage Content</button>
+                        <button @click="adminTab = 'github'" :class="adminTab === 'github' ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/20' : 'text-emerald-400 bg-emerald-500/10'" class="rounded-lg px-3 py-1.5 text-xs font-bold transition flex items-center gap-1">☁️ Cloud Sync</button>
                     </div>
                 </div>
 
                 <div class="rounded-[32px] border border-white/10 bg-white/5 p-6">
+                    
                     <div x-show="adminTab === 'novels'" class="space-y-4">
                         <div>
                             <label class="block text-xs font-bold text-zinc-400 mb-1">Novel Title</label>
@@ -147,10 +141,9 @@
                             <div>
                                 <label class="block text-xs font-bold text-indigo-400 mb-1">🖼️ Method A: Gallery se Photo Chunyein</label>
                                 <input type="file" accept="image/*" @change="processImageUpload($event)" class="block w-full text-xs text-zinc-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 cursor-pointer transition" />
-                                <div x-show="formNovel.coverName" class="text-xs text-emerald-400 mt-1" x-text="'Selected: ' + formNovel.coverName"></div>
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-zinc-400 mb-1">🔗 Method B: Ya Direct Image Link (URL) Paste karein</label>
+                                <label class="block text-xs font-bold text-zinc-400 mb-1">🔗 Method B: Direct Image Link (URL)</label>
                                 <input x-model="formNovel.coverUrl" placeholder="https://example.com/cover.jpg" class="w-full rounded-xl bg-black/20 border border-white/10 px-4 py-2.5 text-xs outline-none text-zinc-300" />
                             </div>
                         </div>
@@ -164,8 +157,8 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-zinc-400 mb-1">Novel Short Description / Synopsis</label>
-                            <textarea x-model="formNovel.description" rows="3" placeholder="Is kahani ke baare mein kuch likhein jo readers ko pasand aaye..." class="w-full rounded-xl bg-black/20 border border-white/10 px-4 py-2.5 text-sm outline-none text-zinc-200"></textarea>
+                            <label class="block text-xs font-bold text-zinc-400 mb-1">Synopsis</label>
+                            <textarea x-model="formNovel.description" rows="3" placeholder="Is kahani ke baare mein kuch likhein..." class="w-full rounded-xl bg-black/20 border border-white/10 px-4 py-2.5 text-sm outline-none text-zinc-200"></textarea>
                         </div>
                         <button @click="submitNovel()" class="rounded-xl bg-white px-5 py-2.5 text-xs font-bold text-black hover:bg-zinc-200 transition">➕ Create Novel Book</button>
                     </div>
@@ -185,10 +178,52 @@
                             <input x-model="formChapter.title" placeholder="e.g. Chapter 1: Nayi Shuruaat" class="w-full rounded-xl bg-black/20 border border-white/10 px-4 py-2.5 text-sm outline-none text-zinc-100" />
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-indigo-400 mb-1">✍️ Write Story Text Content (Poori Kahani Yahan Likhein)</label>
-                            <textarea x-model="formChapter.text" rows="12" placeholder="Yahan apni kahani poori vistar se likhein... Paragraphs badalne ke liye Enter dabayein." class="w-full rounded-xl bg-black/20 border border-white/10 p-4 text-sm outline-none font-serif text-zinc-100 leading-relaxed"></textarea>
+                            <label class="block text-xs font-bold text-indigo-400 mb-1">✍️ Story Text Content</label>
+                            <textarea x-model="formChapter.text" rows="12" placeholder="Yahan apni kahani poori vistar se likhein..." class="w-full rounded-xl bg-black/20 border border-white/10 p-4 text-sm outline-none font-serif text-zinc-100 leading-relaxed"></textarea>
                         </div>
                         <button @click="submitChapter()" class="w-full rounded-xl bg-indigo-600 hover:bg-indigo-500 py-3 text-xs font-bold text-white transition">🚀 Publish Story Chapter</button>
+                    </div>
+
+                    <div x-show="adminTab === 'github'" class="space-y-5">
+                        <div class="p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl">
+                            <h3 class="text-emerald-400 font-bold text-sm mb-2">☁️ GitHub Database Connection</h3>
+                            <p class="text-xs text-emerald-200/70 mb-4">Aapna data unlimited storage ke liye direct apne GitHub repository mein save karein. Yeh details sirf aapke browser mein save hongi.</p>
+                            
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-[11px] font-bold text-zinc-400 mb-1">GitHub Username</label>
+                                    <input x-model="github.user" placeholder="e.g. poto-coder" class="w-full rounded-lg bg-black/40 border border-white/10 px-3 py-2 text-sm outline-none" />
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-bold text-zinc-400 mb-1">Repository Name</label>
+                                    <input x-model="github.repo" placeholder="e.g. my-novels-db" class="w-full rounded-lg bg-black/40 border border-white/10 px-3 py-2 text-sm outline-none" />
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-bold text-zinc-400 mb-1">Personal Access Token (Classic)</label>
+                                    <input type="password" x-model="github.token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" class="w-full rounded-lg bg-black/40 border border-white/10 px-3 py-2 text-sm outline-none" />
+                                    <p class="text-[10px] text-zinc-500 mt-1">Token ko 'repo' scope ki permission dena zaroori hai.</p>
+                                </div>
+                                <div class="pt-2">
+                                    <button @click="saveGithubSettings()" class="bg-white/10 hover:bg-white/20 text-white text-xs font-bold px-4 py-2 rounded-lg transition">💾 Save Credentials Locally</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <button @click="downloadFromCloud()" :disabled="isSyncing" class="flex flex-col items-center justify-center p-4 rounded-2xl bg-zinc-900 border border-white/10 hover:border-indigo-500 transition disabled:opacity-50">
+                                <span class="text-2xl mb-2">⬇️</span>
+                                <span class="font-bold text-sm text-zinc-200">Load from GitHub</span>
+                                <span class="text-[10px] text-zinc-500 text-center mt-1">Cloud se fetch karein</span>
+                            </button>
+                            
+                            <button @click="uploadToCloud()" :disabled="isSyncing" class="flex flex-col items-center justify-center p-4 rounded-2xl bg-indigo-600/20 border border-indigo-500/50 hover:bg-indigo-600/40 transition disabled:opacity-50">
+                                <span class="text-2xl mb-2">☁️</span>
+                                <span class="font-bold text-sm text-indigo-300">Push to GitHub</span>
+                                <span class="text-[10px] text-indigo-400/70 text-center mt-1">Current data cloud pe bhejein</span>
+                            </button>
+                        </div>
+                        
+                        <div x-show="syncMessage" class="text-center text-xs font-bold mt-2 p-2 rounded-lg bg-black/40" :class="syncError ? 'text-red-400' : 'text-emerald-400'" x-text="syncMessage"></div>
                     </div>
 
                     <div x-show="adminTab === 'content'" class="space-y-3">
@@ -199,15 +234,7 @@
                                         <img :src="novel.cover" class="h-10 w-8 object-cover rounded" />
                                         <h4 class="text-sm font-bold text-white" x-text="novel.title"></h4>
                                     </div>
-                                    <button @click="deleteNovel(novel.id)" class="text-[11px] font-bold bg-red-500/10 text-red-400 hover:bg-red-500/20 px-2.5 py-1 rounded-xl transition">🗑️ Delete Novel</button>
-                                </div>
-                                <div class="pl-4 border-l-2 border-zinc-800 space-y-1 mt-2">
-                                    <template x-for="ch in chapters.filter(c => c.novelId === novel.id)">
-                                        <div class="text-[12px] flex justify-between bg-zinc-900/50 p-2.5 rounded-xl">
-                                            <span class="text-zinc-300" x-text="ch.title"></span>
-                                            <button @click="deleteChapter(ch.id, novel.id)" class="text-red-400 font-semibold text-[11px] hover:underline">✕ Delete Chapter</button>
-                                        </div>
-                                    </template>
+                                    <button @click="deleteNovel(novel.id)" class="text-[11px] font-bold bg-red-500/10 text-red-400 hover:bg-red-500/20 px-2.5 py-1 rounded-xl transition">🗑️ Delete</button>
                                 </div>
                             </div>
                         </template>
@@ -221,30 +248,28 @@
         function guguApp() {
             return {
                 view: 'home',
-                adminTab: 'novels',
+                adminTab: 'github', // Start at github tab to show new feature
                 mobileNavOpen: false,
                 
-                novels: JSON.parse(localStorage.getItem('gn_books_v1')) || [
-                    { id: "n1", title: "अस्वीकृति", genre: "Romance", cover: "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=300&q=80", description: "Ek adhuri dastan jo khamoshi se shuru hui." }
-                ],
-                
-                chapters: JSON.parse(localStorage.getItem('gn_chapters_v1')) || [
-                    { id: "c1", novelId: "n1", title: "Chapter 1: Pehla Kadam", text: "Yeh kahani ka pehla panna hai.\n\nPurani yadein hamesha dil mein ghar bana leti hain, chahe hum kitna bhi aage badh jayein. Dhruv ne jab piche mudkar dekha toh rasta dundhla tha, par uski yaadein bilkul saaf thi..." }
-                ],
+                novels: JSON.parse(localStorage.getItem('gn_books_v1')) || [],
+                chapters: JSON.parse(localStorage.getItem('gn_chapters_v1')) || [],
 
                 activeNovel: null,
                 activeChapter: null,
                 
-                formNovel: { title: '', cover: '', coverName: '', coverUrl: '', genre: 'Romance', description: '' },
+                formNovel: { title: '', cover: '', coverUrl: '', genre: 'Romance', description: '' },
                 formChapter: { novelId: '', title: '', text: '' },
 
+                // GitHub Integration State
+                github: JSON.parse(localStorage.getItem('gn_github_settings')) || { user: '', repo: '', token: '' },
+                githubFileSha: null,
+                isSyncing: false,
+                syncMessage: '',
+                syncError: false,
+
                 init() {
-                    if (!localStorage.getItem('gn_books_v1')) {
-                        this.saveDataToStorage();
-                    }
                     if (this.novels.length > 0) {
                         this.activeNovel = this.novels[0];
-                        this.formChapter.novelId = this.novels[0].id;
                     }
                 },
 
@@ -260,142 +285,167 @@
                     }, 80);
                 },
 
-                // 🌟 Image ko upload karte samay uski size choti (compress) karne ka naya function
                 processImageUpload(event) {
                     const file = event.target.files[0];
                     if (!file) return;
-                    this.formNovel.coverName = file.name;
-
                     const reader = new FileReader();
                     reader.onload = (e) => {
                         const img = new Image();
                         img.src = e.target.result;
                         img.onload = () => {
                             const canvas = document.createElement('canvas');
-                            const MAX_WIDTH = 400; // Image ki maximum choudai
-                            const MAX_HEIGHT = 600; // Image ki maximum lambai
-                            let width = img.width;
-                            let height = img.height;
-
-                            if (width > height) {
-                                if (width > MAX_WIDTH) {
-                                    height *= MAX_WIDTH / width;
-                                    width = MAX_WIDTH;
-                                }
-                            } else {
-                                if (height > MAX_HEIGHT) {
-                                    width *= MAX_HEIGHT / height;
-                                    height = MAX_HEIGHT;
-                                }
-                            }
-
-                            canvas.width = width;
-                            canvas.height = height;
-                            const ctx = canvas.getContext('2d');
-                            ctx.drawImage(img, 0, 0, width, height);
-
-                            // Image ko compress karke JPEG mein badalna
-                            this.formNovel.cover = canvas.toDataURL('image/jpeg', 0.7);
+                            let w = img.width, h = img.height;
+                            if (w > 400) { h *= 400/w; w = 400; }
+                            canvas.width = w; canvas.height = h;
+                            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                            this.formNovel.cover = canvas.toDataURL('image/jpeg', 0.6);
                         };
                     };
                     reader.readAsDataURL(file);
                 },
 
                 submitNovel() {
-                    if(!this.formNovel.title || !this.formNovel.description) return alert("Novel Name aur Description bharna zaroori hai!");
+                    if(!this.formNovel.title) return alert("Title required!");
+                    let cover = this.formNovel.cover || this.formNovel.coverUrl || "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&w=300&q=80";
                     
-                    const defaultCover = "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&w=300&q=80";
-                    
-                    let finalCover = defaultCover;
-                    if (this.formNovel.cover && this.formNovel.cover.trim() !== '') {
-                        finalCover = this.formNovel.cover;
-                    } else if (this.formNovel.coverUrl && this.formNovel.coverUrl.trim() !== '') {
-                        finalCover = this.formNovel.coverUrl.trim();
-                    }
-
-                    const newNovel = {
-                        id: "n-" + Date.now(),
-                        title: this.formNovel.title,
-                        genre: this.formNovel.genre,
-                        cover: finalCover,
-                        description: this.formNovel.description
-                    };
-                    
+                    const newNovel = { id: "n-" + Date.now(), title: this.formNovel.title, genre: this.formNovel.genre, cover: cover, description: this.formNovel.description };
                     this.novels.push(newNovel);
-                    
-                    // Storage check karne ke baad clear function run karein
-                    const isSaved = this.saveDataToStorage();
-                    if(isSaved) {
-                        this.activeNovel = newNovel;
-                        this.formNovel = { title: '', cover: '', coverName: '', coverUrl: '', genre: 'Romance', description: '' };
-                        alert("Nayi Novel Book create ho gayi!");
-                        this.view = 'home';
-                    } else {
-                        // Agar save nahi hua (Storage full hone ke karan) toh wapas list se novel hata dein
-                        this.novels.pop(); 
-                    }
+                    this.saveLocal();
+                    this.activeNovel = newNovel;
+                    this.formNovel = { title: '', cover: '', coverUrl: '', genre: 'Romance', description: '' };
+                    alert("Novel Created! (Cloud par bhejne ke liye Push to GitHub dabayein)");
                 },
 
                 submitChapter() {
-                    if(!this.formChapter.novelId || !this.formChapter.title || !this.formChapter.text) {
-                        return alert("Novel select karein, Chapter title likhein aur Story Text likhein!");
-                    }
-
-                    const newCh = {
-                        id: "c-" + Date.now(),
-                        novelId: this.formChapter.novelId,
-                        title: this.formChapter.title,
-                        text: this.formChapter.text
-                    };
-
+                    if(!this.formChapter.novelId || !this.formChapter.text) return alert("Fill all fields!");
+                    const newCh = { id: "c-" + Date.now(), novelId: this.formChapter.novelId, title: this.formChapter.title, text: this.formChapter.text };
                     this.chapters.push(newCh);
-                    
-                    const isSaved = this.saveDataToStorage();
-                    if(isSaved) {
-                        alert("Story Chapter successfully publish ho gaya!");
-                        const savedNovelId = this.formChapter.novelId;
-                        this.formChapter = { novelId: savedNovelId, title: '', text: '' };
-                        this.view = 'home';
-                    } else {
-                        this.chapters.pop();
-                    }
+                    this.saveLocal();
+                    this.formChapter.title = ''; this.formChapter.text = '';
+                    alert("Chapter Added! (Cloud par bhejne ke liye Push to GitHub dabayein)");
                 },
 
-                deleteNovel(novelId) {
-                    if(!confirm("Kya aap is novel aur iske saare chapters ko permanent delete karna chahte hain?")) return;
-                    this.chapters = this.chapters.filter(c => c.novelId !== novelId);
-                    this.novels = this.novels.filter(n => n.id !== novelId);
-                    this.saveDataToStorage();
-                    
-                    if(this.activeNovel && this.activeNovel.id === novelId) {
-                        this.activeNovel = this.novels.length > 0 ? this.novels[0] : null;
-                    }
-                    this.activeChapter = null;
-                    alert("Novel Deleted!");
+                deleteNovel(id) {
+                    if(!confirm("Delete this novel?")) return;
+                    this.novels = this.novels.filter(n => n.id !== id);
+                    this.chapters = this.chapters.filter(c => c.novelId !== id);
+                    this.saveLocal();
                 },
 
-                deleteChapter(chapterId, novelId) {
-                    if(!confirm("Kya is chapter ko delete karna hai?")) return;
-                    this.chapters = this.chapters.filter(c => c.id !== chapterId);
-                    this.saveDataToStorage();
-                    this.activeChapter = null;
-                    alert("Chapter Removed!");
+                saveLocal() {
+                    localStorage.setItem('gn_books_v1', JSON.stringify(this.novels));
+                    localStorage.setItem('gn_chapters_v1', JSON.stringify(this.chapters));
                 },
 
-                // 🌟 Storage Full hone par alert dene wala naya logic
-                saveDataToStorage() {
+                // ---- GITHUB CLOUD SYNC LOGIC ---- //
+                saveGithubSettings() {
+                    localStorage.setItem('gn_github_settings', JSON.stringify(this.github));
+                    this.showSyncMsg("Credentials Saved Locally!", false);
+                },
+
+                getGithubApiUrl() {
+                    return `https://api.github.com/repos/${this.github.user}/${this.github.repo}/contents/database.json`;
+                },
+
+                showSyncMsg(msg, isError) {
+                    this.syncMessage = msg;
+                    this.syncError = isError;
+                    setTimeout(() => this.syncMessage = '', 5000);
+                },
+
+                // Helper to Base64 encode/decode that supports UTF-8 (Hindi text support)
+                utf8ToBase64(str) {
+                    return window.btoa(unescape(encodeURIComponent(str)));
+                },
+                base64ToUtf8(str) {
+                    return decodeURIComponent(escape(window.atob(str)));
+                },
+
+                async downloadFromCloud() {
+                    if (!this.github.token || !this.github.user || !this.github.repo) return alert("Pehle GitHub details bharein!");
+                    this.isSyncing = true;
+                    this.showSyncMsg("Fetching from GitHub...", false);
+
                     try {
-                        localStorage.setItem('gn_books_v1', JSON.stringify(this.novels));
-                        localStorage.setItem('gn_chapters_v1', JSON.stringify(this.chapters));
-                        return true;
-                    } catch (e) {
-                        console.error(e);
-                        alert("⚠️ Storage Full Ho Gayi Hai! Browser mein jyada data save nahi ho sakta. Kripya apni kuch purani novels delete karein ya phir sirf Direct Image Link (URL) ka hi istemal karein.");
-                        return false;
+                        const res = await fetch(this.getGithubApiUrl(), {
+                            headers: { 'Authorization': `Bearer ${this.github.token}`, 'Accept': 'application/vnd.github.v3+json' }
+                        });
+
+                        if (res.status === 404) {
+                            throw new Error("Repository ya file nahi mili. Pehle 'Push to GitHub' karein.");
+                        }
+                        if (!res.ok) throw new Error("Connection Failed! Token check karein.");
+
+                        const data = await res.json();
+                        this.githubFileSha = data.sha; // Save SHA for future updates
+                        
+                        const decodedContent = this.base64ToUtf8(data.content);
+                        const parsedData = JSON.parse(decodedContent);
+
+                        this.novels = parsedData.novels || [];
+                        this.chapters = parsedData.chapters || [];
+                        this.saveLocal(); // Update local storage too
+                        
+                        this.showSyncMsg("✅ Successfully Downloaded & Synced!", false);
+                    } catch (err) {
+                        this.showSyncMsg("❌ Error: " + err.message, true);
                     }
+                    this.isSyncing = false;
+                },
+
+                async uploadToCloud() {
+                    if (!this.github.token || !this.github.user || !this.github.repo) return alert("Pehle GitHub details bharein!");
+                    this.isSyncing = true;
+                    this.showSyncMsg("Pushing to GitHub...", false);
+
+                    // Pehle check karte hain agar file pehle se maujood hai (update ke liye SHA chahiye)
+                    if (!this.githubFileSha) {
+                        try {
+                            const checkRes = await fetch(this.getGithubApiUrl(), {
+                                headers: { 'Authorization': `Bearer ${this.github.token}`, 'Accept': 'application/vnd.github.v3+json' }
+                            });
+                            if (checkRes.ok) {
+                                const data = await checkRes.json();
+                                this.githubFileSha = data.sha;
+                            }
+                        } catch(e) { console.log("New file will be created."); }
+                    }
+
+                    const dbContent = JSON.stringify({ novels: this.novels, chapters: this.chapters }, null, 2);
+                    
+                    const payload = {
+                        message: `Auto-sync from GuGu Novels app: ${new Date().toLocaleString()}`,
+                        content: this.utf8ToBase64(dbContent)
+                    };
+                    
+                    if (this.githubFileSha) {
+                        payload.sha = this.githubFileSha;
+                    }
+
+                    try {
+                        const res = await fetch(this.getGithubApiUrl(), {
+                            method: 'PUT',
+                            headers: { 
+                                'Authorization': `Bearer ${this.github.token}`, 
+                                'Content-Type': 'application/json' 
+                            },
+                            body: JSON.stringify(payload)
+                        });
+
+                        if (!res.ok) throw new Error("Upload fail ho gaya. Token permissions check karein.");
+
+                        const resData = await res.json();
+                        this.githubFileSha = resData.content.sha; // Update SHA
+                        
+                        this.showSyncMsg("☁️✅ Database safely Pushed to GitHub!", false);
+                    } catch (err) {
+                        this.showSyncMsg("❌ Error: " + err.message, true);
+                    }
+                    this.isSyncing = false;
                 }
             }
         }
     </script>
 </body>
 </html>
+
