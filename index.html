@@ -55,9 +55,10 @@
 
                 <div class="space-y-3">
                     <div class="font-bold text-zinc-100 text-lg flex items-center gap-2">✍️ Selected Novels</div>
-                    <div class="flex gap-4 overflow-x-auto pb-2 no-scrollbar">
+                    <!-- Yahan side-scroll hatakar Grid layout lagaya gaya hai jisse upar-neeche scroll ho -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                         <template x-for="novel in novels">
-                            <div @click="selectNovel(novel)" :class="activeNovel?.id === novel.id ? 'border-indigo-500 bg-indigo-500/10' : 'border-white/10 bg-white/5'" class="min-w-[180px] max-w-[180px] rounded-[24px] border p-3 cursor-pointer transition transform hover:scale-102">
+                            <div @click="selectNovel(novel)" :class="activeNovel?.id === novel.id ? 'border-indigo-500 bg-indigo-500/10' : 'border-white/10 bg-white/5'" class="w-full rounded-[24px] border p-3 cursor-pointer transition transform hover:scale-105 hover:bg-white/10">
                                 <img :src="novel.cover" class="h-44 w-full object-cover rounded-xl shadow-md" />
                                 <h4 class="font-bold text-sm mt-2 truncate text-zinc-100" x-text="novel.title"></h4>
                                 <p class="text-[11px] text-zinc-400 font-medium" x-text="novel.genre"></p>
@@ -99,7 +100,7 @@
                             <h2 class="text-xl font-black text-indigo-400" x-text="activeChapter?.title"></h2>
                             <p class="text-xs text-zinc-400 mt-0.5" x-text="'Book: ' + activeNovel?.title"></p>
                         </div>
-                        <button @click="activeChapter = null" class="bg-white/5 hover:bg-white/10 text-zinc-300 text-xs px-3 py-1.5 rounded-xl font-bold">✕ Close Reader</button>
+                        <button @click="activeChapter = null" class="bg-white/5 hover:bg-white/10 text-zinc-300 text-xs px-3 py-1.5 rounded-xl font-bold transition">✕ Close Reader</button>
                     </div>
                     <div class="text-zinc-200 text-base leading-relaxed whitespace-pre-line font-serif max-w-3xl mx-auto py-4 bg-black/20 p-5 rounded-2xl min-h-[200px]" x-text="activeChapter?.text"></div>
                     <div class="flex justify-center pt-2">
@@ -117,7 +118,7 @@
                     <template x-for="n in novels">
                         <div @click="selectNovel(n); view='home'" class="rounded-[24px] border border-white/10 bg-black/40 p-4 cursor-pointer hover:bg-white/5 transition flex gap-4 items-center">
                             <img :src="n.cover" class="h-20 w-14 rounded-xl object-cover shadow-md" />
-                            <div class="truncate">
+                            <div class="truncate flex-1">
                                 <h3 class="font-bold text-sm text-zinc-100 truncate" x-text="n.title"></h3>
                                 <p class="text-[11px] text-white/50" x-text="n.genre"></p>
                                 <p class="text-[10px] text-indigo-400 mt-1 font-bold" x-text="chapters.filter(c => c.novelId === n.id).length + ' Chapters'"></p>
@@ -131,9 +132,9 @@
                 <div class="rounded-[32px] border border-white/10 bg-white/5 p-5">
                     <h2 class="text-xl font-black">Author Dashboard Engine</h2>
                     <div class="flex gap-2 mt-4 p-1 bg-black/40 rounded-xl max-w-max">
-                        <button @click="adminTab = 'novels'" :class="adminTab === 'novels' ? 'bg-white text-black' : 'text-white/70'" class="rounded-lg px-3 py-1.5 text-xs font-bold">Write New Novel</button>
-                        <button @click="adminTab = 'chapters'" :class="adminTab === 'chapters' ? 'bg-white text-black' : 'text-white/70'" class="rounded-lg px-3 py-1.5 text-xs font-bold">Write Chapter Script</button>
-                        <button @click="adminTab = 'content'" :class="adminTab === 'content' ? 'bg-white text-black' : 'text-white/70'" class="rounded-lg px-3 py-1.5 text-xs font-bold">Manage Content</button>
+                        <button @click="adminTab = 'novels'" :class="adminTab === 'novels' ? 'bg-white text-black' : 'text-white/70'" class="rounded-lg px-3 py-1.5 text-xs font-bold transition">Write New Novel</button>
+                        <button @click="adminTab = 'chapters'" :class="adminTab === 'chapters' ? 'bg-white text-black' : 'text-white/70'" class="rounded-lg px-3 py-1.5 text-xs font-bold transition">Write Chapter Script</button>
+                        <button @click="adminTab = 'content'" :class="adminTab === 'content' ? 'bg-white text-black' : 'text-white/70'" class="rounded-lg px-3 py-1.5 text-xs font-bold transition">Manage Content</button>
                     </div>
                 </div>
 
@@ -146,7 +147,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-black/30 p-4 rounded-2xl border border-white/5">
                             <div>
                                 <label class="block text-xs font-bold text-indigo-400 mb-1">🖼️ Method A: Gallery se Photo Chunyein</label>
-                                <input type="file" accept="image/*" @change="processImageUpload($event)" class="block w-full text-xs text-zinc-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500" />
+                                <input type="file" accept="image/*" @change="processImageUpload($event)" class="block w-full text-xs text-zinc-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 cursor-pointer transition" />
                                 <div x-show="formNovel.coverName" class="text-xs text-emerald-400 mt-1" x-text="'Selected: ' + formNovel.coverName"></div>
                             </div>
                             <div>
@@ -224,8 +225,12 @@
                 adminTab: 'novels',
                 mobileNavOpen: false,
                 
+                // Maine default placeholder books mein aapke style ki kuch nayi kahaniyan add ki hain testing ke liye
                 novels: JSON.parse(localStorage.getItem('gn_books_v1')) || [
-                    { id: "n1", title: "अस्वीकृति", genre: "Romance", cover: "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=300&q=80", description: "Ek adhuri dastan jo khamoshi se shuru hui." }
+                    { id: "n1", title: "अस्वीकृति", genre: "Romance", cover: "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=300&q=80", description: "Ek adhuri dastan jo khamoshi se shuru hui." },
+                    { id: "n2", title: "खामोशी बनाम तूफ़ान", genre: "Drama", cover: "https://images.unsplash.com/photo-1474552226712-ac0f0d61af24?auto=format&fit=crop&w=300&q=80", description: "Khamoshi ke piche chhupe toofan ki kahani." },
+                    { id: "n3", title: "सितमगढ़ का महायोद्धा", genre: "Fantasy", cover: "https://images.unsplash.com/photo-1535666669445-e8c15cd2e7d9?auto=format&fit=crop&w=300&q=80", description: "Ek yoddha ki anokhi dastan aur uska safar." },
+                    { id: "n4", title: "ख्वाबों की रानी", genre: "Romance", cover: "https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?auto=format&fit=crop&w=300&q=80", description: "Khwabon mein aane wali ek rahasyamayi kahani." }
                 ],
                 
                 chapters: JSON.parse(localStorage.getItem('gn_chapters_v1')) || [
@@ -255,7 +260,6 @@
 
                 readChapter(chapter) {
                     this.activeChapter = chapter;
-                    // Auto scroll to reader block smoothly
                     setTimeout(() => {
                         document.getElementById('reader-view')?.scrollIntoView({ behavior: 'smooth' });
                     }, 80);
@@ -278,7 +282,6 @@
                     
                     const defaultCover = "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&w=300&q=80";
                     
-                    // Priority given to file upload, then custom URL, then default image
                     let finalCover = defaultCover;
                     if (this.formNovel.cover && this.formNovel.cover.trim() !== '') {
                         finalCover = this.formNovel.cover;
@@ -320,7 +323,6 @@
 
                     alert("Story Chapter successfully publish ho gaya!");
                     
-                    // Reset fields
                     const savedNovelId = this.formChapter.novelId;
                     this.formChapter = { novelId: savedNovelId, title: '', text: '' };
                     this.view = 'home';
